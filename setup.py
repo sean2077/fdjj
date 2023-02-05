@@ -27,7 +27,7 @@ setup(
     url="https://github.com/zhangxianbing/fdjj",
     packages=find_packages(include=[f"{__name__}*"]),
     install_requires=read_requirements(),
-    python_requires=">=3.6",
+    python_requires=">=3.9",
     entry_points={
         "console_scripts": [
             f"{__name__} = {__name__}.{__name__}:main",
