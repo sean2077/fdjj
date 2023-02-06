@@ -413,7 +413,7 @@ def flow1(
 
         skill_index = 0
         attack_cnt = 0
-        stage_cnt = 0
+        stage_cnt = -1
         new_stage = False
         while True:
             # 判定是否选择技能
@@ -439,7 +439,8 @@ def flow1(
 
             # 判定过关画面
             if _check_scene(GUOGUAN_SCENE):
-                print(f"第{stage_cnt}关通过...")
+                if stage_cnt > 0:
+                    print(f"第{stage_cnt}关通过...")
                 stage_cnt += 1
                 new_stage = True
                 time.sleep(0.5)
