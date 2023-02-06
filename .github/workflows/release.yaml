@@ -41,6 +41,7 @@ jobs:
           extra_plugins: |
             @semantic-release/github
             conventional-changelog-conventionalcommits
+            @google/semantic-release-replace-plugin
             @semantic-release/changelog
             @semantic-release/git
             @semantic-release/exec
