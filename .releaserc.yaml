@@ -20,13 +20,8 @@ plugins:
     - replacements:
         - files:
             - setup.py
-          from: 'version=".*"'
-          to: 'version="${nextRelease.version}"'
-          results:
-            - file: setup.py
-              hasChanged: true
-              numMatches: 1
-              numReplacements: 1
+          from: version=".*"
+          to: version="${nextRelease.version}"
           countMatches: true
   - - "@semantic-release/git"
     - assets:
