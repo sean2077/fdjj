@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/zhangxianbing/fdjj/compare/v1.1.0...v1.1.1) (2023-02-06)
+
+
+### Bug Fixes
+
+* :bug: 修复通关数错误问题 ([d979e9e](https://github.com/zhangxianbing/fdjj/commit/d979e9e163b6dc070b2d63fc878988c1a0ea7487))
+
 # [1.1.0](https://github.com/zhangxianbing/fdjj/compare/v1.0.1...v1.1.0) (2023-02-06)
 
 
