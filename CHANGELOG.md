@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/zhangxianbing/fdjj/compare/v1.0.1...v1.1.0) (2023-02-06)
+
+
+### Features
+
+* :sparkles: 新增 version 命令，支持查询版本信息 ([7e305b2](https://github.com/zhangxianbing/fdjj/commit/7e305b2217022a50f15249979e83e6228ef02666))
+
 ## [1.0.1](https://github.com/zhangxianbing/fdjj/compare/v1.0.0...v1.0.1) (2023-02-06)
 
 
