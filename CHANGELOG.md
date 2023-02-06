@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/zhangxianbing/fdjj/compare/v1.0.0...v1.0.1) (2023-02-06)
+
+
+### Bug Fixes
+
+* 修复无法找到开始按钮时可能陷入死循环的问题 ([2ca8cde](https://github.com/zhangxianbing/fdjj/commit/2ca8cde945c6e87a119f75260b0432e4f043760d))
+
 # 1.0.0 (2023-02-06)
 
 
