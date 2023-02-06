@@ -19,14 +19,14 @@ plugins:
   - - "@google/semantic-release-replace-plugin"
     - replacements:
         - files:
-            - setup.py
-          from: version=".*"
-          to: version="${nextRelease.version}"
+            - fdjj/__init__.py
+          from: __version__ = ".*"
+          to: __version__ = "${nextRelease.version}"
           countMatches: true
   - - "@semantic-release/git"
     - assets:
         - CHANGELOG.md
-        - setup.py
+        - fdjj/__init__.py
       message: |-
         chore(release): ${nextRelease.version}
 

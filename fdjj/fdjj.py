@@ -470,6 +470,14 @@ def flow1(
         print(f"第 {i + 1} 轮结束 ")
 
 
+@app.command()
+def version():
+    """打印版本信息"""
+    from . import __version__
+
+    print(f"""飞到绝技等系列游戏辅助工具箱 (v{__version__}) """)
+
+
 def main():
     try:
         app()

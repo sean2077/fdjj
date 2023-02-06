@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-from fdjj import __name__
+from fdjj import __name__, __version__
 
 
 def read_requirements():
@@ -20,7 +20,7 @@ def read_readme():
 
 setup(
     name=__name__,
-    version="1.0.1",
+    version=__version__,
     description="Fei Dao Jue Ji.",
     long_description=read_readme(),
     long_description_content_type="text/markdown",
