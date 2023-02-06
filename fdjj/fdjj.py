@@ -403,17 +403,18 @@ def flow1(
         """刷图流程"""
         # 开始
 
-        while True:
+        for _ in range(10):
             started = _click_button(START_BUTTON)
             if continue_flag or started:
                 break
             time.sleep(0.5)
+        else:  # 连续10次未找到开始按钮则退出此轮流程
+            return
 
         skill_index = 0
         attack_cnt = 0
         stage_cnt = 0
         new_stage = False
-        beat_boss = False
         while True:
             # 判定是否选择技能
             if _check_scene(SKILL_SELECT_SCENE):
@@ -422,7 +423,6 @@ def flow1(
                 time.sleep(0.5)
                 _select_skill_randomly()
                 time.sleep(0.5)
-                beat_boss = True
 
             # 判定是否选择图腾
             if _check_scene(TUTENG_SELECT_SCENE):
@@ -442,7 +442,6 @@ def flow1(
                 print(f"第{stage_cnt}关通过...")
                 stage_cnt += 1
                 new_stage = True
-                beat_boss = False
                 time.sleep(0.5)
 
             # 走A
