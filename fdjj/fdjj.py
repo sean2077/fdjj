@@ -411,24 +411,35 @@ def flow1(
         else:  # 连续10次未找到开始按钮则退出此轮流程
             return
 
+        step_num = 2
+
         skill_index = 0
-        attack_cnt = 0
-        stage_cnt = -1
+        loop_cnt = -1
+        stage_cnt = 0
         new_stage = False
+        beat_boss = False
         while True:
+            loop_cnt += 1
+
+            # TODO 改为多线程写法
+
             # 判定是否选择技能
-            if _check_scene(SKILL_SELECT_SCENE):
-                skill_index += 1
-                print(f"选择第{skill_index}个技能...")
-                time.sleep(0.5)
-                _select_skill_randomly()
-                time.sleep(0.5)
+            if loop_cnt % step_num == 0:
+                if _check_scene(SKILL_SELECT_SCENE):
+                    skill_index += 1
+                    print(f"选择第{skill_index}个技能...")
+                    time.sleep(0.5)
+                    _select_skill_randomly()
+                    time.sleep(0.5)
+                    beat_boss = True
 
             # 判定是否选择图腾
-            if _check_scene(TUTENG_SELECT_SCENE):
-                print(f"选择图腾技能...")
-                _click_point((0.5, 0.8))
-                time.sleep(1)
+            if loop_cnt % step_num == 1:
+                if _check_scene(TUTENG_SELECT_SCENE):
+                    print(f"选择图腾技能...")
+                    _click_point((0.5, 0.8))
+                    time.sleep(1)
+                    beat_boss = True
 
             # 判定是否结束
             if _check_scene(END_SCENE):
@@ -438,17 +449,19 @@ def flow1(
                 break
 
             # 判定过关画面
-            if _check_scene(GUOGUAN_SCENE):
-                if stage_cnt > 0:
+            if beat_boss:
+                if _check_scene(GUOGUAN_SCENE):
                     print(f"第{stage_cnt}关通过...")
-                stage_cnt += 1
-                new_stage = True
-                time.sleep(0.5)
+                    stage_cnt += 1
+                    new_stage = True
+                    beat_boss = False
+                    loop_cnt = 0
+                    time.sleep(0.5)
 
             # 走A
             _attack_and_move()
-            attack_cnt += 1
-            if attack_cnt % 20:
+            time.sleep(0.1)
+            if loop_cnt > 10:
                 if new_stage:
                     new_stage = False
                     if stage_cnt >= 4:
