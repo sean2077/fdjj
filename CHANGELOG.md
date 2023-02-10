@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/zhangxianbing/fdjj/compare/v1.1.1...v1.2.0) (2023-02-10)
+
+
+### Features
+
+* :sparkles: 支持自动组队刷本 ([490c4ed](https://github.com/zhangxianbing/fdjj/commit/490c4ed59f6e498e9685b266822595ce0a588897))
+
 ## [1.1.1](https://github.com/zhangxianbing/fdjj/compare/v1.1.0...v1.1.1) (2023-02-06)
 
 
