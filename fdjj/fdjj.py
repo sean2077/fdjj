@@ -237,6 +237,8 @@ SKILL_SELECT_SCENE = os.path.join(IMAGE_ROOT, "skill_select.png")
 TUTENG_SELECT_SCENE = os.path.join(IMAGE_ROOT, "tuteng_select.png")
 GUOGUAN_SCENE = os.path.join(IMAGE_ROOT, "guoguan.png")
 END_SCENE = os.path.join(IMAGE_ROOT, "end.png")
+ADD_TEAMER_BUTTON = os.path.join(IMAGE_ROOT, "add_teamer.png")
+YIJIANYAOQING_BUTTON = os.path.join(IMAGE_ROOT, "yijianyaoqing.png")
 
 
 def locate_app_left_top():
@@ -312,6 +314,7 @@ def flow1(
     conf_file: Path = typer.Argument("config/config.json", help="配置文件"),
     repeat_num: int = typer.Option(1, "-r", help="刷图次数"),
     continue_flag: bool = typer.Option(False, "-c", help="是否继续当前挑战"),
+    with_teams: bool = typer.Option(False, "-t", help="是否组队"),
 ):
     """刷图"""
     conf = read_json(conf_file)
@@ -325,6 +328,7 @@ def flow1(
     locations = conf["locations"]
     skill_boxes = [locations[f"skill{i + 1}_box"] for i in range(3)]
     steer_point = locations["steer_point"]
+
     pg.PAUSE = 0.01
 
     def _click_button(button: str):
@@ -336,6 +340,15 @@ def flow1(
             return False
         pg.click(*center)
         return True
+
+    def _click_button_with_retry(button: str, retry: int):
+        for _ in range(retry):
+            success = _click_button(button)
+            if success:
+                return True
+            time.sleep(0.5)
+        else:
+            return False
 
     def _click_point(point: Point):
         rel_x, rel_y = point
@@ -364,15 +377,17 @@ def flow1(
         else:
             return False
 
-    def _wait_for_scene(scene: str, timeout: int = -1):
-        """等待场景出现"""
+    def _wait_for_scene(scene: str, timeout: int = -1, inverse: bool = False):
+        """等待场景出现/消失"""
         s = time.time()
         cnt = 0
         while True:
             center = pg.locateCenterOnScreen(
                 scene, region=region, confidence=confidence
             )
-            if center:
+            if not inverse and center:
+                return True
+            if inverse and not center:
                 return True
             if 0 < timeout < time.time() - s:
                 return False
@@ -401,15 +416,40 @@ def flow1(
 
     def _flow():
         """刷图流程"""
-        # 开始
-
-        for _ in range(10):
-            started = _click_button(START_BUTTON)
-            if continue_flag or started:
-                break
-            time.sleep(0.5)
-        else:  # 连续10次未找到开始按钮则退出此轮流程
-            return
+        # 邀请队友后开始
+        if with_teams:
+            while True:
+                _click_point((0.6, 0.64))
+                time.sleep(1)
+                if _click_button(START_BUTTON):
+                    break
+                _click_point((0.5, 0.825))
+                time.sleep(1)
+                if _click_button(START_BUTTON):
+                    break
+                _click_point((0.5, 0.22))
+                _click_point((0.5, 0.825))
+                if _click_button(START_BUTTON):
+                    break
+                _click_point((0.695, 0.825))
+                time.sleep(1)
+                if _click_button(START_BUTTON):
+                    break
+                time.sleep(1)
+                _click_point((0.5, 0.825))
+                time.sleep(1)
+                if _click_button(START_BUTTON):
+                    break
+                time.sleep(1)
+        else:
+            # 直接开始
+            for _ in range(10):
+                started = _click_button(START_BUTTON)
+                if continue_flag or started:
+                    break
+                time.sleep(0.5)
+            else:  # 连续10次未找到开始按钮则退出此轮流程
+                return
 
         step_num = 2
 
@@ -470,7 +510,7 @@ def flow1(
                         time.sleep(0.2)
                         _click_point(locations["zhoushu1_point"])
 
-                    if stage_cnt >= 9:
+                    if stage_cnt >= 8:
                         time.sleep(0.2)
                         _click_point(locations["huanshen_point"])
                         time.sleep(0.2)
@@ -482,6 +522,24 @@ def flow1(
         print(f"第 {i + 1} 轮开始... ")
         _flow()
         print(f"第 {i + 1} 轮结束 ")
+
+
+@app.command("show")
+def show_capture_coords(
+    height: int = typer.Option(1122, "-h", help="小程序窗口高"),
+    width: int = typer.Option(600, "-w", help="小程序窗口宽"),
+):
+    """显示截图的坐标，配合微信截图使用"""
+
+    def on_click(x, y, button, pressed):
+        if pressed:
+            print(f"({x},{y})  {x/width},{y/height}")
+        else:
+            print(f"({x},{y})  {x/width},{y/height}")
+            return False
+
+    with pynput.mouse.Listener(on_click=on_click) as listener:
+        listener.join()
 
 
 @app.command()
