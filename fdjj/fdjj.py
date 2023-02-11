@@ -2,6 +2,7 @@ import json
 import os
 import random
 import time
+from itertools import cycle
 from pathlib import Path
 from typing import Sequence, Tuple
 
@@ -350,11 +351,13 @@ def flow1(
         else:
             return False
 
-    def _click_point(point: Point):
+    def _click_point(point: Point, wait: float = 0.0):
         rel_x, rel_y = point
         x = l0 + rel_x * w0
         y = t0 + rel_y * h0
         pg.click(x, y, duration=0.2)
+        if wait > 0:
+            time.sleep(wait)
 
     def _click_skill(box: Box):
         """选技能"""
@@ -418,29 +421,19 @@ def flow1(
         """刷图流程"""
         # 邀请队友后开始
         if with_teams:
-            while True:
-                _click_point((0.6, 0.64))
-                time.sleep(1)
+            points = [
+                (0.6, 0.64),
+                (0.5, 0.825),
+                (0.5, 0.22),
+                (0.5, 0.825),
+                (0.695, 0.825),
+                (0.5, 0.825),
+            ]
+            for point in cycle(points):
+                _click_point(point, 0.5)
                 if _click_button(START_BUTTON):
                     break
-                _click_point((0.5, 0.825))
-                time.sleep(1)
-                if _click_button(START_BUTTON):
-                    break
-                _click_point((0.5, 0.22))
-                _click_point((0.5, 0.825))
-                if _click_button(START_BUTTON):
-                    break
-                _click_point((0.695, 0.825))
-                time.sleep(1)
-                if _click_button(START_BUTTON):
-                    break
-                time.sleep(1)
-                _click_point((0.5, 0.825))
-                time.sleep(1)
-                if _click_button(START_BUTTON):
-                    break
-                time.sleep(1)
+
         else:
             # 直接开始
             for _ in range(10):
