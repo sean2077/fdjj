@@ -240,6 +240,8 @@ GUOGUAN_SCENE = os.path.join(IMAGE_ROOT, "guoguan.png")
 END_SCENE = os.path.join(IMAGE_ROOT, "end.png")
 ADD_TEAMER_BUTTON = os.path.join(IMAGE_ROOT, "add_teamer.png")
 YIJIANYAOQING_BUTTON = os.path.join(IMAGE_ROOT, "yijianyaoqing.png")
+UPDATE_TEAMER_BUTTON = os.path.join(IMAGE_ROOT, "update_teamer.png")
+ZAIXIANWANJIA_BUTTON = os.path.join(IMAGE_ROOT, "zaixianwanjia.png")
 
 
 def locate_app_left_top():
@@ -339,6 +341,7 @@ def flow1(
         if not center:
             print(f"未找到按钮: {button}")
             return False
+        print(f"点击按钮: {button}")
         pg.click(*center)
         return True
 
@@ -423,14 +426,18 @@ def flow1(
         if with_teams:
             points = [
                 (0.6, 0.64),
-                (0.5, 0.825),
-                (0.5, 0.22),
-                (0.5, 0.825),
-                (0.695, 0.825),
-                (0.5, 0.825),
+                YIJIANYAOQING_BUTTON,  # (0.5, 0.825),
+                ZAIXIANWANJIA_BUTTON,  # (0.5, 0.22),  # 在线玩家
+                YIJIANYAOQING_BUTTON,  # (0.5, 0.825),
+                UPDATE_TEAMER_BUTTON,  # (0.695, 0.825),
+                YIJIANYAOQING_BUTTON,  # (0.5, 0.825),
             ]
             for point in cycle(points):
-                _click_point(point, 0.5)
+                if isinstance(point, str):
+                    _click_button(point)
+                else:
+                    _click_point(point, 0.8)
+
                 if _click_button(START_BUTTON):
                     break
 
