@@ -425,7 +425,7 @@ def flow1(
         # 邀请队友后开始
         if with_teams:
             points = [
-                (0.6, 0.64),
+                ADD_TEAMER_BUTTON,  # (0.6, 0.64),
                 YIJIANYAOQING_BUTTON,  # (0.5, 0.825),
                 ZAIXIANWANJIA_BUTTON,  # (0.5, 0.22),  # 在线玩家
                 YIJIANYAOQING_BUTTON,  # (0.5, 0.825),
@@ -435,6 +435,7 @@ def flow1(
             for point in cycle(points):
                 if isinstance(point, str):
                     _click_button(point)
+                    time.sleep(0.5)
                 else:
                     _click_point(point, 0.8)
 
