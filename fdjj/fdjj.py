@@ -2,6 +2,7 @@ import json
 import os
 import random
 import time
+from itertools import cycle
 from pathlib import Path
 from typing import Sequence, Tuple
 
@@ -239,6 +240,8 @@ GUOGUAN_SCENE = os.path.join(IMAGE_ROOT, "guoguan.png")
 END_SCENE = os.path.join(IMAGE_ROOT, "end.png")
 ADD_TEAMER_BUTTON = os.path.join(IMAGE_ROOT, "add_teamer.png")
 YIJIANYAOQING_BUTTON = os.path.join(IMAGE_ROOT, "yijianyaoqing.png")
+UPDATE_TEAMER_BUTTON = os.path.join(IMAGE_ROOT, "update_teamer.png")
+ZAIXIANWANJIA_BUTTON = os.path.join(IMAGE_ROOT, "zaixianwanjia.png")
 
 
 def locate_app_left_top():
@@ -338,6 +341,7 @@ def flow1(
         if not center:
             print(f"未找到按钮: {button}")
             return False
+        print(f"点击按钮: {button}")
         pg.click(*center)
         return True
 
@@ -350,11 +354,13 @@ def flow1(
         else:
             return False
 
-    def _click_point(point: Point):
+    def _click_point(point: Point, wait: float = 0.0):
         rel_x, rel_y = point
         x = l0 + rel_x * w0
         y = t0 + rel_y * h0
         pg.click(x, y, duration=0.2)
+        if wait > 0:
+            time.sleep(wait)
 
     def _click_skill(box: Box):
         """选技能"""
@@ -418,29 +424,24 @@ def flow1(
         """刷图流程"""
         # 邀请队友后开始
         if with_teams:
-            while True:
-                _click_point((0.6, 0.64))
-                time.sleep(1)
+            points = [
+                ADD_TEAMER_BUTTON,  # (0.6, 0.64),
+                YIJIANYAOQING_BUTTON,  # (0.5, 0.825),
+                ZAIXIANWANJIA_BUTTON,  # (0.5, 0.22),  # 在线玩家
+                YIJIANYAOQING_BUTTON,  # (0.5, 0.825),
+                UPDATE_TEAMER_BUTTON,  # (0.695, 0.825),
+                YIJIANYAOQING_BUTTON,  # (0.5, 0.825),
+            ]
+            for point in cycle(points):
+                if isinstance(point, str):
+                    _click_button(point)
+                    time.sleep(0.5)
+                else:
+                    _click_point(point, 0.8)
+
                 if _click_button(START_BUTTON):
                     break
-                _click_point((0.5, 0.825))
-                time.sleep(1)
-                if _click_button(START_BUTTON):
-                    break
-                _click_point((0.5, 0.22))
-                _click_point((0.5, 0.825))
-                if _click_button(START_BUTTON):
-                    break
-                _click_point((0.695, 0.825))
-                time.sleep(1)
-                if _click_button(START_BUTTON):
-                    break
-                time.sleep(1)
-                _click_point((0.5, 0.825))
-                time.sleep(1)
-                if _click_button(START_BUTTON):
-                    break
-                time.sleep(1)
+
         else:
             # 直接开始
             for _ in range(10):
