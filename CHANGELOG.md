@@ -1,3 +1,12 @@
+## [1.2.1](https://github.com/zhangxianbing/fdjj/compare/v1.2.0...v1.2.1) (2023-02-17)
+
+
+### Bug Fixes
+
+* 优化组队流程 ([5f82991](https://github.com/zhangxianbing/fdjj/commit/5f829912520dca7c9a2e02fd037a3e2a9f2dd11e))
+* 进一步优化组队流程 ([ed95293](https://github.com/zhangxianbing/fdjj/commit/ed9529343e5c62d6d7352692819f77c81293a1e3))
+* 进一步优化组队流程 ([efb322e](https://github.com/zhangxianbing/fdjj/commit/efb322e7d03e6690b2f343011bebac39e5490c81))
+
 # [1.2.0](https://github.com/zhangxianbing/fdjj/compare/v1.1.1...v1.2.0) (2023-02-10)
 
 
